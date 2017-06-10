@@ -50,6 +50,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    
+    #'whitenoise.middleware.WhiteNoiseMiddleware',                     # http://whitenoise.evans.io/en/stable/
 )
 
 ROOT_URLCONF = 'mysite.urls'
