@@ -6,6 +6,8 @@
             <div class="date">
                 {{ post.published_date }}
             </div>
+        {% else %}
+            <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Опубликовать</a>
         {% endif %}
         
         <h1>{{ post.title }}</h1>
@@ -15,10 +17,42 @@
     <div>
     {% if user.is_authenticated %}
     <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}" title="Редактировать статью">
-        <span class="glyphicon glyphicon-pencil"></span>
-    </a>   
-    {% endif %}    
+        <span class="glyphicon glyphicon-pencil"></span>Редактировать
+    </a> 
+    <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}">
+        <span class="glyphicon glyphicon-remove"></span>Удалить
+    </a>    
+    {% endif %} 
+    
     <a class="btn btn-default" href='{% url "post_list" %}'>Назад</a>
     </div>
     <p></p>
+    
+    <hr>
+    
+    {% for comment in post.comments.all %}
+        {% if user.is_authenticated or comment.approved_comment %}
+        <div class="comment">
+            <div class="date">
+                {{ comment.created_date }}
+                {% if not comment.approved_comment %}  <!-- Неавторизованный комментарий -->
+                    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+                {% endif %}
+            </div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text|linebreaks }}</p>
+        </div>
+        {% else %} <!-- Неавторизованный комментарий, анонимного пользоватнля -->
+            <div class="date">{{ comment.created_date }}</div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text|linebreaks }}</p>            
+        {% endif %}
+    {% empty %}
+        <p>Комментариев пока нет. Будьте первым!</p>
+    {% endfor %}
+    <hr>
+    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Добавить комментарий</a>
+    <p></p>
+
 {% endblock %}

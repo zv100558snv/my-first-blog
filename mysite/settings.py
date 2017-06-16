@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     
     'blog',                                                            # 'blog',
+    'register',                                                        # Регистрация
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,3 +107,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'                                             # расположении статических файлов 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')                      # + расположении статических файлов 
+
+LOGIN_REDIRECT_URL = '/'
